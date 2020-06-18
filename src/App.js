@@ -1,15 +1,11 @@
 import React from "react";
 import "./App.css";
-import { List } from "./TodoList/List";
-import { Task } from "./TodoList/Task";
+import { Todo } from "./TodoList/Todo";
 
 const App = () => {
   return (
-    <div className="centeringTodoList">
-      <div className="todoList">
-        <List />
-        <Task />
-      </div>
+    <div className="mainContainer">
+      <Todo />
     </div>
   );
 };
