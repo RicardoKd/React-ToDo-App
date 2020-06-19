@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Task } from "./Task";
 
 const Todo = () => {
   // Todo name
@@ -8,17 +7,26 @@ const Todo = () => {
   const [inputValue, setInputValue] = useState("");
   // list of tasks
   const [tasks, setTasks] = useState([]);
-  // Add new task to the task list
-  const addTask = (taskText) => {
-    const newTodo = [{ taskText }, ...tasks];
-    setTasks(newTodo);
-  };
 
   const handleSubmit = (e) => {
+    // Don`t refresh the page
     e.preventDefault();
+    // Check if input is empty
     if (!inputValue) return;
-    addTask(inputValue);
+    // Add new task to the task list
+    setTasks([{ taskText: inputValue, completed: false }, ...tasks]);
+    // Clear input
     setInputValue("");
+  };
+
+  const removeTask = (i) => {
+    const todoWithout = tasks.filter((val, index) => index !== i);
+    setTasks([...todoWithout]);
+  };
+
+  const isCompleted = (i) => {
+    const todoWithout = tasks.filter((val, index) => index !== i);
+    setTasks([...todoWithout, { taskText: tasks[i].taskText, completed: !tasks[i].completed }]);
   };
 
   return (
@@ -44,9 +52,15 @@ const Todo = () => {
       </div>
 
       <div className="list">
-        {tasks.map((task, index) => (
-          <Task key={index} index={index} task={task} tasks={tasks} setTasks={setTasks} />
-        ))}
+        {tasks.map((task, index) => {
+          return (
+            <div className="list_task" key={index} index={index} task={task}>
+              <p className={task.completed ? "list_task-text completed" : "list_task-text"}>{task.taskText}</p>
+              <i className="fas fa-check" onClick={() => isCompleted(index)}></i>
+              <i className="far fa-trash-alt" onClick={() => removeTask(index)}></i>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
